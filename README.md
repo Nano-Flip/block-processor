@@ -9,5 +9,5 @@ docker run -d \
   -e FILTER=<| FS array of valid returns> \
   -e PGID=<UID> -e PUID=<GUID> \
   -p 3000:3000 \
-  nano-flip/block-processor:latest
+  nanoflip/block-processor:latest
 ```

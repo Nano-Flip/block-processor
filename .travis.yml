@@ -1,0 +1,29 @@
+sudo: true
+
+language: bash
+
+services:
+  - docker
+
+env:
+  global:
+    - DEBIAN_FRONTEND="noninteractive"
+    - DOCKERHUB_LIVE="nanoflip/block-processor"
+    - GITHUB_REPO="nano-flip/block-processor"
+
+jobs:
+  include:
+    - stage: Build
+      if: NOT (type IN (pull_request))
+      script:
+        - docker build --no-cache -f Dockerfile --build-arg VERSION="${TRAVIS_COMMIT}" -t ${DOCKERHUB_LIVE}:${TRAVIS_COMMIT} .
+        # Tag build to latest
+        - docker tag ${DOCKERHUB_LIVE}:${TRAVIS_COMMIT} ${DOCKERHUB_LIVE}:latest
+        # Login to DockerHub
+        - echo $DOCKERPASS | docker login -u $DOCKERUSER --password-stdin
+        # Push tags
+        - docker push ${DOCKERHUB_LIVE}:${TRAVIS_COMMIT}
+        - docker push ${DOCKERHUB_LIVE}:latest
+        # Sync readme to DockerHub
+        - docker pull lsiodev/readme-sync
+        - docker run --rm=true -e DOCKERHUB_USERNAME=$DOCKERUSER -e DOCKERHUB_PASSWORD=$DOCKERPASS -e GIT_REPOSITORY=${GITHUB_REPO} -e DOCKER_REPOSITORY=${DOCKERHUB_LIVE} -e GIT_BRANCH=master lsiodev/readme-sync bash -c 'node sync'
