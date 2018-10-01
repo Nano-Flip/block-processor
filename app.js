@@ -5,7 +5,7 @@ var fs = require('fs');
 
 // User passed variables
 var ingestion_host = process.env.HOST:
-var ingestion_path = process.env.PATH;
+var ingestion_path = process.env.HOST_PATH;
 var success_messages = process.env.FILTER.split('|');
 
 // Create Fallback directory if it does not exist
