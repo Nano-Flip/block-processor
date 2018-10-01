@@ -4,7 +4,7 @@ var https = require('https');
 var fs = require('fs');
 
 // User passed variables
-var ingestion_host = process.env.HOST:
+var ingestion_host = process.env.HOST;
 var ingestion_path = process.env.HOST_PATH;
 var success_messages = process.env.FILTER.split('|');
 
