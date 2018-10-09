@@ -16,7 +16,7 @@ jobs:
     - stage: Build
       if: NOT (type IN (pull_request))
       script:
-        - docker build --no-cache -f Dockerfile --build-arg VERSION="${TRAVIS_COMMIT}" -t ${DOCKERHUB_LIVE}:${TRAVIS_COMMIT} .
+        - docker build --no-cache -f Dockerfile --build-arg SHA="${TRAVIS_COMMIT}" -t ${DOCKERHUB_LIVE}:${TRAVIS_COMMIT} .
         # Tag build to latest
         - docker tag ${DOCKERHUB_LIVE}:${TRAVIS_COMMIT} ${DOCKERHUB_LIVE}:latest
         # Login to DockerHub
